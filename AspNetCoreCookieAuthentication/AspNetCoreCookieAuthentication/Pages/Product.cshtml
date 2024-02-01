@@ -1,0 +1,23 @@
+﻿@page
+@model AspNetCoreCookieAuthentication.Pages.ProductModel
+@{
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h2>Product Page</h2>
+
+<p>Only authroized users can access this page</p>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <table class="table table-sm">
+        @foreach (var claim in User.Claims)
+        {
+            <tr>
+                <td>@claim.Type</td>
+                <td>@claim.Value</td>
+            </tr>
+        }
+    </table>
+}

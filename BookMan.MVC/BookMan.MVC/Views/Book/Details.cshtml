@@ -1,0 +1,12 @@
+﻿@model BookMan.Mvc.Models.Book
+@{
+    ViewData["Title"] = Model.Name;
+}
+<partial name="_Single" model="Model" />
+<hr />
+<div>
+    <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Back to List</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-success">Update</a>
+    <a asp-action="Read" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning">Read</a>
+</div>

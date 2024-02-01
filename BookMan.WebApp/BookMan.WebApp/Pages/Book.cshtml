@@ -1,0 +1,54 @@
+﻿@page "{id:int?}"
+@model BookMan.WebApp.Pages.BookModel
+<div style="margin: auto;" class="border border-light p-3 w-50 shadow">
+    @switch (Model.Job) {
+        case BookModel.Action.Detail:
+            template(readOnly: true, errorMessage: "Không tìm thấy cuốn sách bạn yêu cầu.");
+            <a class="btn btn-info btn-block mb-2" href="/">Return</a>
+            break;
+        case BookModel.Action.Delete:
+            template(readOnly: true, errorMessage: "Không tìm thấy cuốn sách bạn yêu cầu.");
+            if(Model.Book != null)
+            {
+                <p class="text-danger text-center">Bạn có thực sự muốn xóa cuốn sách.?</p>
+                <a class="btn btn-danger btn-block mb-2" href="/book/@Model.Book.Id?handler=confirm">Delete</a>
+            }
+            <a class="btn btn-info btn-block mb-2" href="/">Return</a>
+            break;
+        case BookModel.Action.Create:
+            await form();
+            break;
+        case BookModel.Action.Update:
+            await form(handler: "update");
+            break;
+    }
+</div>
+@{
+    void template(bool readOnly = true, string errorMessage = "") {
+        if (Model.Book == null) {
+            <p class="h5 text-center text-danger mb-4">@errorMessage</p>
+            return;
+        }
+        <input name="id" type="hidden" value="@Model.Book.Id" />
+        <p class="h4 text-center mb-4">@Model.Book.Title</p>
+        <label for="title" class="">Tiêu đề</label>
+        <input name="title" type="text" class="form-control mb-2" id="title" value="@Model.Book.Title" @(readOnly ? "readonly" : "") />
+        <label for="authors" class="">Tác giả</label>
+        <input name="authors" type="text" class="form-control mb-2" id="authors" value="@Model.Book.Authors" @(readOnly ? "readonly" : "") />
+        <label for="publisher" class="">Nhà xuất bản</label>
+        <input name="publisher" type="text" class="form-control mb-2" id="publisher" value="@Model.Book.Publisher" @(readOnly ? "readonly" : "") />
+        <label for="year" class="">Năm xuất bản</label>
+        <input name="year" type="number" class="form-control mb-2" id="year" value="@Model.Book.Year" @(readOnly ? "readonly" : "") />
+    }
+    async Task form(string handler = "create")
+    {
+        <form method="post" href="?handler=@handler">
+            @{
+                template(false);
+            }
+            <button type="submit" class="btn btn-primary btn-block mb-2">Save</button>
+            <button type="reset" class="btn btn-secondary btn-block mb-2">Reset</button>
+        </form>
+        <a class="btn btn-info btn-block mb-2" href="/">Return</a>
+    }
+}
